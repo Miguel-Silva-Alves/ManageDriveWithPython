@@ -25,16 +25,15 @@ if __name__ == "__main__":
     elif i == 2: 
         f_path = input("Caminho inteiro: ") 
         f_nome = input("Nome do arquivo: ")
-        obj.FileUpload(f_path, f_nome) 
+        obj.FileUpload(f_path, f_nome, folder_id="1qCvx5IJXSE7YwdS7BGrGw5YDy9j_OiMw") 
     elif i == 3:
-        quantidade = int(input("Quantidade de arquivos: "))
-        result_dict = obj.getFileList(quantidade)
+        result_dict = obj.getFileList()
         file_list = result_dict.get('files') 
   
         for file in file_list: 
             print(file['name'])
     elif i == 4:
-        result_dict = obj.getFileList()
+        result_dict = obj.getFoldersList()
         file_list = result_dict.get('files') 
         lista_folders = tratamento(file_list)
         

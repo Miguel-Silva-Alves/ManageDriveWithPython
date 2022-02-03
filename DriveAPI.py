@@ -57,11 +57,13 @@ class DriveAPI:
             print("Something went wrong.") 
             return False
   
-    def FileUpload(self, filepath, name): 
+    def FileUpload(self, filepath, name, folder_id = None): 
         
         mimetype = MimeTypes().guess_type(name)[0] 
-        
         file_metadata = {'name': name} 
+        if folder_id != None:
+            file_metadata['parents'] = [folder_id]
+        
         try: 
             media = MediaFileUpload(filepath, mimetype=mimetype) 
             file = self.service.files().create(body=file_metadata, media_body=media, fields='id').execute() 
@@ -71,6 +73,18 @@ class DriveAPI:
     
     def getFileList(self): 
         resource = self.service.files() 
-        result = resource.list(pageSize=100, fields="files(id, name)").execute() 
+        result = resource.list(
+            pageSize=100, 
+            fields="files(id, name)"
+            ).execute() 
+        return result
+
+    def getFoldersList(self): 
+        resource = self.service.files() 
+        result = resource.list(
+            q = "mimeType = 'application/vnd.google-apps.folder'",
+            pageSize=100, 
+            fields="files(id, name)"
+            ).execute() 
         return result
     
